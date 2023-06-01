@@ -1,35 +1,71 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from 'react';
+import './App.css';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [items, setItems] = useState<string[]>(['algo', 'algo 2']);
+  const [task, setTask] = useState('');
+
+  function handleAddItem() {
+    if (task.trim() !== '') {
+      setItems([...items, task]);
+      setTask('');
+    }
+  }
+
+  function handleTaskChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setTask(e.target.value);
+  }
+
+  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleAddItem();
+    }
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="container">
+      <div className="row">
+        <div className="col-md-12">
+          <div className="card card-white">
+            <div className="card-body">
+              <form>
+                <input
+                  onChange={handleTaskChange}
+                  onKeyDown={handleKeyDown}
+                  type="text"
+                  className="form-control add-task"
+                  placeholder="New Task..."
+                  value={task}
+                />
+              </form>
+              <div className="todo-list">
+                {items.map((x, index) => (
+                  <Item key={index} text={x} />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </div>
+  );
 }
 
-export default App
+function Item({ text }: { text: string }) {
+  return (
+    <div className="todo-item">
+      <div className="checker">
+        <span>
+          <input type="checkbox" />
+        </span>
+      </div>
+      <span>{text}</span>
+      <a href="javascript:void(0);" className="float-right remove-todo-item">
+        <i className="icon-close"></i>
+      </a>
+    </div>
+  );
+}
+
+export default App;
