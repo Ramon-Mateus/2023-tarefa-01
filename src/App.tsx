@@ -2,7 +2,7 @@ import { useState } from 'react';
 import './App.css';
 
 function App() {
-  const [items, setItems] = useState<string[]>(['algo', 'algo 2']);
+  const [items, setItems] = useState<string[]>(['Estudar História', 'Projeto React']);
   const [task, setTask] = useState('');
 
   function handleAddItem() {
